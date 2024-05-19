@@ -10,7 +10,8 @@ targets=(
 
 mkdir --parents certificates
 
-for certificate in $(ssh root@${host_certbot} find ${catalog_certificates} -name "${pattern_certificate}");
+for certificate in $(ssh root@${host_certbot} \
+  find ${catalog_certificates} -name "${pattern_certificate}");
 do
   rsync root@${host_certbot}:"${certificate}" ./certificates/
 done
@@ -23,14 +24,18 @@ do
 
   for container in ${containers}; do
 
-    ssh root@"${host}" docker exec "${container}" mkdir --parents ${catalog_certificates}
-    ssh root@"${host}" docker cp "${container}":"${catalog_certificates}" certificates_"${container}"
+    ssh root@"${host}" \
+      docker exec "${container}" mkdir --parents ${catalog_certificates}
+
+    ssh root@"${host}" \
+      docker cp "${container}":"${catalog_certificates}" certificates_"${container}"
 
     for certificate in $(ssh root@"${host}" find '~/certificates' -type f);
     do
       certificate_base=$(basename ${certificate})
 
-      answer=$(ssh root@"${host}" diff \
+      answer=$(ssh root@"${host}" \
+        diff \
         '~/certificates'/"${certificate_base}" \
         '~/certificates_'"${container}/${certificate_base}" \
         2>/dev/null >/dev/null && \
@@ -38,7 +43,9 @@ do
 
       if [ "${answer}" = '0' ]; then
         echo "${host}:${container}:${certificate_base}"
-        ssh root@"${host}" docker cp "${certificate}" "${container}":${catalog_certificates}
+
+        ssh root@"${host}" \
+          docker cp "${certificate}" "${container}":${catalog_certificates}
       fi
     done
 
