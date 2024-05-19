@@ -35,7 +35,7 @@ do
 
     for certificate in $(ssh root@"${host}" find '~/certificates' -type f);
     do
-      certificate_base=$(basename ${certificate})
+      certificate_base=$(basename "${certificate})
 
       answer=$(ssh root@"${host}" \
         diff \
