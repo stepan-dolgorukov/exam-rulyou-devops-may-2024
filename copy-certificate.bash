@@ -30,7 +30,11 @@ do
     do
       certificate_base=$(basename ${certificate})
 
-      answer=$(ssh root@${host} diff '~/certificates'/${certificate_base} '~/certificates_'${container}/${certificate_base} 2>/dev/null >/dev/null && echo '1' || echo '0')
+      answer=$(ssh root@${host} diff \
+        '~/certificates'/${certificate_base} \
+        '~/certificates_'${container}/${certificate_base} \
+        2>/dev/null >/dev/null && \
+        echo '1' || echo '0')
 
       if [ ${answer} = '0' ]; then
         echo "${host}:${container}:${certificate}"
