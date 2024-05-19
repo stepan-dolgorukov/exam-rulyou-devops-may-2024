@@ -2,7 +2,8 @@
 
 # Машина, с которой копируются сертификаты.
 host_certbot='192.168.57.5'
-pattern_certificate='*.rulyou.ru.pem'
+
+pattern_certificates='*.rulyou.ru.pem'
 catalog_certificates='/etc/ssl/certs'
 
 # Машины, в контейнеры на которых копируются сертификаты.
@@ -13,7 +14,7 @@ targets=(
 mkdir --parents certificates
 
 for certificate in $(ssh root@${host_certbot} \
-  find ${catalog_certificates} -name "${pattern_certificate}");
+  find ${catalog_certificates} -name "${pattern_certificates}");
 do
   rsync root@${host_certbot}:"${certificate}" ./certificates/
 done
