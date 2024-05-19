@@ -9,6 +9,7 @@ catalog_certificates='/etc/ssl/certs'
 # Машины, в контейнеры на которых копируются сертификаты.
 targets=(
   '192.168.57.5'
+  '192.168.57.9'
 )
 
 mkdir --parents certificates
