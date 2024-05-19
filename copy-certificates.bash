@@ -8,7 +8,7 @@ targets=(
   '192.168.57.5'
 )
 
-mkdir certificates
+mkdir --parents certificates
 
 for certificate in $(ssh root@${host_certbot} find ${catalog_certificates} -name "${pattern_certificate}");
 do
@@ -23,7 +23,7 @@ do
 
   for container in ${containers}; do
 
-    ssh root@"${host}" docker exec "${container}" mkdir --parent ${catalog_certificates}
+    ssh root@"${host}" docker exec "${container}" mkdir --parents ${catalog_certificates}
     ssh root@"${host}" docker cp "${container}":"${catalog_certificates}" certificates_"${container}"
 
     for certificate in $(ssh root@"${host}" find '~/certificates' -type f);
