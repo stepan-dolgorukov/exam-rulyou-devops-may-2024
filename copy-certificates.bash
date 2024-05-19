@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+# Машина, с которой копируются сертификаты.
 host_certbot='192.168.57.5'
 pattern_certificate='*.rulyou.ru.pem'
 catalog_certificates='/etc/ssl/certs'
 
+# Машины, в контейнеры на которых копируются сертификаты.
 targets=(
   '192.168.57.5'
 )
