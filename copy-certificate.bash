@@ -9,28 +9,28 @@ targets=(
 
 mkdir certificates
 
-for certificate in $(ssh root@${host_certbot} find /etc/ssl -name ${pattern_certificate});
+for certificate in $(ssh root@${host_certbot} find /etc/ssl -name "${pattern_certificate}");
 do
-  rsync root@${host_certbot}:${certificate} ./certificates/
+  rsync root@${host_certbot}:"${certificate}" ./certificates/
 done
 
-for host in ${targets[@]};
+for host in "${targets[@]}";
 do
 
-  containers=$(ssh root@${host} docker container list --quiet)
-  rsync --recursive certificates root@${host}:'~'
+  containers=$(ssh root@"${host}" docker container list --quiet)
+  rsync --recursive certificates root@"${host}":'~'
 
   for container in ${containers}; do
 
-    ssh root@${host} docker exec ${container} mkdir --parent /etc/ssl
+    ssh root@"${host}" docker exec "${container}" mkdir --parent /etc/ssl
 
-    for certificate in $(ssh root@${host} find '~/certificates' -type f);
+    for certificate in $(ssh root@"${host}" find '~/certificates' -type f);
     do
-      echo ${host}:${container}:${certificate}
-      ssh root@${host} docker cp ${certificate} ${container}:/etc/ssl
+      echo "${host}:${container}:${certificate}"
+      ssh root@"${host}" docker cp "${certificate}" "${container}":/etc/ssl
     done
 
   done
 
-  ssh root@${host} rm --recursive '~/certificates'
+  ssh root@"${host}" rm --recursive '~/certificates'
 done
