@@ -37,7 +37,7 @@ do
         echo '1' || echo '0')
 
       if [ ${answer} = '0' ]; then
-        echo "${host}:${container}:${certificate}"
+        echo "${host}:${container}:${certificate_base}"
         ssh root@"${host}" docker cp "${certificate}" "${container}":${catalog_certificates}
       fi
     done
